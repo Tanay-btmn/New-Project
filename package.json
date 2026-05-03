@@ -1,0 +1,15 @@
+{
+  "name": "movie-booking-system-monolith",
+  "version": "1.0.0",
+  "description": "Full stack movie booking system deployed as a single unit",
+  "main": "backend/index.js",
+  "scripts": {
+    "install-all": "npm install && cd backend && npm install && cd ../BMS-Frontend && npm install",
+    "build": "cd BMS-Frontend && npm run build",
+    "start": "cd backend && node index.js",
+    "dev": "concurrently \"cd backend && nodemon index.js\" \"cd BMS-Frontend && npm run dev\""
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
