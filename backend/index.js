@@ -24,10 +24,11 @@ mongoose.connect(MONGODB_URI)
   .then(async () => {
     console.log('Connected to MongoDB');
     
-    // Auto-seed if empty
+    // Auto-seed to apply local posters
     const movieCount = await Movie.countDocuments();
-    if (movieCount === 0) {
-      console.log('Database empty, auto-seeding initial data...');
+    if (movieCount < 6) {
+      console.log('Refreshing database with local posters...');
+      await Movie.deleteMany({}); // Clear old data to apply new poster paths
       await Movie.insertMany([
         { name: 'Inception', genre: 'Sci-Fi', duration: 148, posterUrl: '/posters/Inception.jpeg' },
         { name: 'Interstellar', genre: 'Sci-Fi', duration: 169, posterUrl: '/posters/Interstellar.jpeg' },
