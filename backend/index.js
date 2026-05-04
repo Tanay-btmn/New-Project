@@ -16,8 +16,25 @@ app.use(express.static(path.join(__dirname, '../BMS-Frontend/dist')));
 
 // Database Connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/movie_booking';
+const Movie = require('./models/Movie');
+
 mongoose.connect(MONGODB_URI)
-  .then(() => console.log('Connected to MongoDB'))
+  .then(async () => {
+    console.log('Connected to MongoDB');
+    
+    // Auto-seed if empty
+    const movieCount = await Movie.countDocuments();
+    if (movieCount === 0) {
+      console.log('Database empty, auto-seeding initial data...');
+      // Minimal seed for quick startup
+      await Movie.insertMany([
+        { name: 'Inception', genre: 'Sci-Fi', duration: 148, posterUrl: 'https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=2070&auto=format&fit=crop' },
+        { name: 'Interstellar', genre: 'Sci-Fi', duration: 169, posterUrl: 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=2066&auto=format&fit=crop' },
+        { name: 'Oppenheimer', genre: 'Biography', duration: 180, posterUrl: 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?q=80&w=2070&auto=format&fit=crop' }
+      ]);
+      console.log('Auto-seed complete!');
+    }
+  })
   .catch(err => console.error('Could not connect to MongoDB', err));
 
 // Routes

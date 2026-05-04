@@ -6,7 +6,8 @@ const movieSchema = new mongoose.Schema({
   genre: { type: String },
   duration: { type: Number },
   releaseDate: { type: Date },
-  language: { type: String }
+  language: { type: String },
+  posterUrl: { type: String }
 }, { timestamps: true });
 
 movieSchema.set('toJSON', {
