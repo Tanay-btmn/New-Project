@@ -12,6 +12,21 @@ app.use(cors());
 app.use(express.json());
 
 // 2. API Routes
+app.get('/debug-files', (req, res) => {
+  const fs = require('fs');
+  const results = {
+    cwd: process.cwd(),
+    dirname: __dirname,
+    backendContents: fs.readdirSync(__dirname),
+  };
+  try {
+    results.distContents = fs.readdirSync(path.join(__dirname, 'dist'));
+  } catch (e) {
+    results.distError = e.message;
+  }
+  res.json(results);
+});
+
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/movies', require('./routes/movieRoutes'));
 app.use('/api/theaters', require('./routes/theaterRoutes'));
