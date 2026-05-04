@@ -13,6 +13,8 @@ app.use(express.json());
 
 // Serve static files from the React frontend app
 app.use(express.static(path.join(__dirname, '../BMS-Frontend/dist')));
+// Serve posters
+app.use('/posters', express.static(path.join(__dirname, 'Posters')));
 
 // Database Connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/movie_booking';
@@ -26,11 +28,13 @@ mongoose.connect(MONGODB_URI)
     const movieCount = await Movie.countDocuments();
     if (movieCount === 0) {
       console.log('Database empty, auto-seeding initial data...');
-      // Minimal seed for quick startup
       await Movie.insertMany([
-        { name: 'Inception', genre: 'Sci-Fi', duration: 148, posterUrl: 'https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=2070&auto=format&fit=crop' },
-        { name: 'Interstellar', genre: 'Sci-Fi', duration: 169, posterUrl: 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=2066&auto=format&fit=crop' },
-        { name: 'Oppenheimer', genre: 'Biography', duration: 180, posterUrl: 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?q=80&w=2070&auto=format&fit=crop' }
+        { name: 'Inception', genre: 'Sci-Fi', duration: 148, posterUrl: '/posters/Inception.jpeg' },
+        { name: 'Interstellar', genre: 'Sci-Fi', duration: 169, posterUrl: '/posters/Interstellar.jpeg' },
+        { name: 'The Dark Knight', genre: 'Action', duration: 152, posterUrl: '/posters/The Dark Knight.jpeg' },
+        { name: 'Project Hail Mary', genre: 'Sci-Fi', duration: 150, posterUrl: '/posters/Project Hail Mary.jpeg' },
+        { name: 'Star Wars', genre: 'Sci-Fi', duration: 121, posterUrl: '/posters/Star Wars.jpeg' },
+        { name: 'The Conjuring', genre: 'Horror', duration: 112, posterUrl: '/posters/The Conjuring.jpeg' }
       ]);
       console.log('Auto-seed complete!');
     }
