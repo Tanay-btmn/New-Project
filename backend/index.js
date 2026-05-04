@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -11,22 +12,32 @@ const PORT = process.env.PORT || 8080;
 app.use(cors());
 app.use(express.json());
 
-// 2. API Routes
-app.get('/debug-files', (req, res) => {
-  const fs = require('fs');
-  const results = {
+// 2. Diagnostic Route
+app.get('/debug-env', (req, res) => {
+  const findDist = (dir, depth = 0) => {
+    if (depth > 2) return null;
+    const items = fs.readdirSync(dir);
+    if (items.includes('dist')) return path.join(dir, 'dist');
+    for (const item of items) {
+      const fullPath = path.join(dir, item);
+      if (fs.statSync(fullPath).isDirectory() && !item.includes('node_modules')) {
+        const found = findDist(fullPath, depth + 1);
+        if (found) return found;
+      }
+    }
+    return null;
+  };
+
+  const rootDist = findDist(path.join(__dirname, '..'));
+  res.json({
     cwd: process.cwd(),
     dirname: __dirname,
-    backendContents: fs.readdirSync(__dirname),
-  };
-  try {
-    results.distContents = fs.readdirSync(path.join(__dirname, 'dist'));
-  } catch (e) {
-    results.distError = e.message;
-  }
-  res.json(results);
+    foundDist: rootDist,
+    env: process.env.NODE_ENV
+  });
 });
 
+// 3. API Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/movies', require('./routes/movieRoutes'));
 app.use('/api/theaters', require('./routes/theaterRoutes'));
@@ -34,25 +45,47 @@ app.use('/api/shows', require('./routes/showRoutes'));
 app.use('/api/bookings', require('./routes/bookingRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 
-// 3. Static Assets (Posters, etc.)
+// 4. Static Assets
 app.use('/posters', express.static(path.join(__dirname, 'Posters')));
 
-// 4. Frontend Static Files (Serving from local dist folder)
-const frontendPath = path.join(__dirname, 'dist');
-app.use(express.static(frontendPath));
+// 5. Smart Frontend Serving
+const possiblePaths = [
+  path.join(__dirname, 'dist'),
+  path.join(__dirname, '../BMS-Frontend/dist'),
+  path.join(__dirname, '../../BMS-Frontend/dist'),
+  path.join(process.cwd(), 'BMS-Frontend/dist'),
+  path.join(process.cwd(), 'dist')
+];
 
-// Database Connection & Auto-Seeding
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/movie_booking';
+let finalFrontendPath = null;
+for (const p of possiblePaths) {
+  if (fs.existsSync(p)) {
+    finalFrontendPath = p;
+    console.log('Success! Found frontend build at:', p);
+    break;
+  }
+}
+
+if (finalFrontendPath) {
+  app.use(express.static(finalFrontendPath));
+  app.use((req, res, next) => {
+    if (req.path.startsWith('/api') || req.path.startsWith('/posters')) return next();
+    res.sendFile(path.join(finalFrontendPath, 'index.html'));
+  });
+} else {
+  console.warn('CRITICAL: Frontend build not found anywhere!');
+}
+
+// Database Connection & Seeding
+const MONGODB_URI = process.env.MONGODB_URI;
 const Movie = require('./models/Movie');
 
 mongoose.connect(MONGODB_URI)
   .then(async () => {
     console.log('Connected to MongoDB');
-    
-    // Auto-seed if empty
     const movieCount = await Movie.countDocuments();
     if (movieCount === 0) {
-      console.log('Database empty, auto-seeding initial data...');
+      console.log('Seeding database...');
       await Movie.insertMany([
         { 
           name: 'Inception', 
@@ -67,7 +100,7 @@ mongoose.connect(MONGODB_URI)
           description: 'A team of explorers travel through a wormhole in space...',
           genre: 'Sci-Fi', duration: 169, posterUrl: '/posters/Interstellar.jpeg',
           trailerUrl: 'https://www.youtube.com/watch?v=zSWdZVtXT7E',
-          cast: ['Matthew McConaughey', 'Anne Hathaway', 'Jessica Chastain'],
+          cast: ['Matthew McConaughey', 'Anne Hathaway', 'Jessica Chasten'],
           crew: ['Christopher Nolan (Director)']
         },
         { 
@@ -127,13 +160,6 @@ mongoose.connect(MONGODB_URI)
       console.log('Seeding complete!');
     }
   })
-  .catch(err => console.error('Could not connect to MongoDB', err));
+  .catch(err => console.error('MongoDB connection error:', err));
 
-// 5. Frontend Catch-all
-app.use((req, res) => {
-  res.sendFile(path.join(frontendPath, 'index.html'));
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
