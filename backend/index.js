@@ -22,7 +22,7 @@ app.use('/api/admin', require('./routes/adminRoutes'));
 // 3. Static Assets (Posters, etc.)
 app.use('/posters', express.static(path.join(__dirname, 'Posters')));
 
-// 4. Frontend Static Files (Serving from LOCAL dist folder inside backend)
+// 4. Frontend Static Files (Serving from local dist folder)
 const frontendPath = path.join(__dirname, 'dist');
 app.use(express.static(frontendPath));
 
