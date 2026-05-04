@@ -81,9 +81,16 @@ const MovieDetails = ({ toggleFavorite, favMovies = [] }) => {
           <p className="text-lg text-gray-300 leading-relaxed max-w-2xl">{movie.description}</p>
 
           <div className="flex flex-wrap gap-4 mt-4">
-            <button className="bg-white/10 hover:bg-white/20 px-8 py-3 rounded-full font-bold flex items-center gap-2 transition-all border border-white/20">
-              <Play className="w-5 h-5 fill-current" /> Watch Trailer
-            </button>
+            {movie.trailerUrl && (
+              <a 
+                href={movie.trailerUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-white/10 hover:bg-white/20 px-8 py-3 rounded-full font-bold flex items-center gap-2 transition-all border border-white/20"
+              >
+                <Play className="w-5 h-5 fill-current" /> Watch Trailer
+              </a>
+            )}
 
             <button
               onClick={() => toggleFavorite(movie)}
@@ -94,6 +101,34 @@ const MovieDetails = ({ toggleFavorite, favMovies = [] }) => {
             >
               <Heart className={`w-6 h-6 ${isFavorite ? 'fill-white text-white' : 'group-hover:text-red-500'}`} />
             </button>
+          </div>
+
+          {/* Cast & Crew Section */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4">
+            {movie.cast && movie.cast.length > 0 && (
+              <div>
+                <h2 className="text-lg font-bold mb-3 text-gray-200">Cast</h2>
+                <div className="flex flex-wrap gap-2">
+                  {movie.cast.map((actor, index) => (
+                    <span key={index} className="bg-white/5 border border-white/10 px-3 py-1 rounded-lg text-sm text-gray-400">
+                      {actor}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+            {movie.crew && movie.crew.length > 0 && (
+              <div>
+                <h2 className="text-lg font-bold mb-3 text-gray-200">Crew</h2>
+                <div className="flex flex-wrap gap-2">
+                  {movie.crew.map((member, index) => (
+                    <span key={index} className="bg-white/5 border border-white/10 px-3 py-1 rounded-lg text-sm text-gray-400">
+                      {member}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Shows Section */}

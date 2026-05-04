@@ -30,12 +30,60 @@ mongoose.connect(MONGODB_URI)
       console.log('Refreshing database with absolute poster paths...');
       await Movie.deleteMany({}); 
       await Movie.insertMany([
-        { name: 'Inception', genre: 'Sci-Fi', duration: 148, posterUrl: '/posters/Inception.jpeg' },
-        { name: 'Interstellar', genre: 'Sci-Fi', duration: 169, posterUrl: '/posters/Interstellar.jpeg' },
-        { name: 'The Dark Knight', genre: 'Action', duration: 152, posterUrl: '/posters/The Dark Knight.jpeg' },
-        { name: 'Project Hail Mary', genre: 'Sci-Fi', duration: 150, posterUrl: '/posters/Project Hail Mary.jpeg' },
-        { name: 'Star Wars', genre: 'Sci-Fi', duration: 121, posterUrl: '/posters/Star Wars.jpeg' },
-        { name: 'The Conjuring', genre: 'Horror', duration: 112, posterUrl: '/posters/The Conjuring.jpeg' }
+        { 
+          name: 'Inception', 
+          genre: 'Sci-Fi', 
+          duration: 148, 
+          posterUrl: '/posters/Inception.jpeg',
+          trailerUrl: 'https://www.youtube.com/watch?v=YoHD9XEInc0',
+          cast: ['Leonardo DiCaprio', 'Joseph Gordon-Levitt', 'Elliot Page'],
+          crew: ['Christopher Nolan (Director)']
+        },
+        { 
+          name: 'Interstellar', 
+          genre: 'Sci-Fi', 
+          duration: 169, 
+          posterUrl: '/posters/Interstellar.jpeg',
+          trailerUrl: 'https://www.youtube.com/watch?v=zSWdZVtXT7E',
+          cast: ['Matthew McConaughey', 'Anne Hathaway', 'Jessica Chastain'],
+          crew: ['Christopher Nolan (Director)']
+        },
+        { 
+          name: 'The Dark Knight', 
+          genre: 'Action', 
+          duration: 152, 
+          posterUrl: '/posters/The Dark Knight.jpeg',
+          trailerUrl: 'https://www.youtube.com/watch?v=EXeTwQWrcwY',
+          cast: ['Christian Bale', 'Heath Ledger', 'Aaron Eckhart'],
+          crew: ['Christopher Nolan (Director)']
+        },
+        { 
+          name: 'Project Hail Mary', 
+          genre: 'Sci-Fi', 
+          duration: 150, 
+          posterUrl: '/posters/Project Hail Mary.jpeg',
+          trailerUrl: 'https://www.youtube.com/watch?v=2vU_0l6H3rY',
+          cast: ['Ryan Gosling'],
+          crew: ['Phil Lord (Director)', 'Christopher Miller (Director)']
+        },
+        { 
+          name: 'Star Wars', 
+          genre: 'Sci-Fi', 
+          duration: 121, 
+          posterUrl: '/posters/Star Wars.jpeg',
+          trailerUrl: 'https://www.youtube.com/watch?v=1g3_CFmnU7k',
+          cast: ['Mark Hamill', 'Harrison Ford', 'Carrie Fisher'],
+          crew: ['George Lucas (Director)']
+        },
+        { 
+          name: 'The Conjuring', 
+          genre: 'Horror', 
+          duration: 112, 
+          posterUrl: '/posters/The Conjuring.jpeg',
+          trailerUrl: 'https://www.youtube.com/watch?v=k10ETZ41q5o',
+          cast: ['Vera Farmiga', 'Patrick Wilson', 'Lili Taylor'],
+          crew: ['James Wan (Director)']
+        }
       ]);
       console.log('Auto-seed complete!');
     }

@@ -7,7 +7,10 @@ const movieSchema = new mongoose.Schema({
   duration: { type: Number },
   releaseDate: { type: Date },
   language: { type: String },
-  posterUrl: { type: String }
+  posterUrl: { type: String },
+  trailerUrl: { type: String },
+  cast: [{ type: String }],
+  crew: [{ type: String }]
 }, { timestamps: true });
 
 movieSchema.set('toJSON', {
