@@ -56,9 +56,9 @@ const MovieDetails = ({ toggleFavorite, favMovies = [] }) => {
         {/* Poster */}
         <div className="w-full md:w-1/3">
           <img
-            src={movie.poster_path || '/placeholder.jpg'}
+            src={movie.posterUrl || '/placeholder.jpg'}
             alt={movie.name}
-            className="rounded-2xl shadow-2xl border border-white/10 w-full object-cover aspect-2/3"
+            className="rounded-2xl shadow-2xl border border-white/10 w-full object-cover aspect-[2/3]"
           />
         </div>
 

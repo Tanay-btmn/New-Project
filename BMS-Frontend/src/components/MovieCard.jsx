@@ -13,9 +13,9 @@ const MovieCard = ({ movie, toggleFavorite, favMovies = [] }) => {
       onClick={() => navigate(`/Movies/${movie.id}`)}
       className="group cursor-pointer bg-white/5 rounded-2xl overflow-hidden hover:bg-white/10 transition-all border border-white/10 shadow-xl"
     >
-      <div className="relative aspect-2/3 overflow-hidden">
+      <div className="relative aspect-[2/3] overflow-hidden bg-white/5">
         <img 
-          src={movie.poster_path || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'} 
+          src={movie.posterUrl || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=800&q=80'} 
           alt={movie.name || movie.title} 
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
         />
