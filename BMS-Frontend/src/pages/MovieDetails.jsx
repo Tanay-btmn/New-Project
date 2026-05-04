@@ -11,7 +11,7 @@ const MovieDetails = ({ toggleFavorite, favMovies = [] }) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  const isFavorite = favMovies.some(m => m.id === parseInt(id))
+  const isFavorite = favMovies.some(m => m.id === id)
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -21,7 +21,7 @@ const MovieDetails = ({ toggleFavorite, favMovies = [] }) => {
         setMovie(response.data)
 
         // Fetch shows for this movie
-        const showsResponse = await API.get(`/api/show/getshowsbymovie/${id}`)
+        const showsResponse = await API.get(`/api/shows/getshowsbymovie/${id}`)
         setShows(showsResponse.data)
       } catch (err) {
         setError('Movie not found')
