@@ -10,8 +10,8 @@ const HeroSection = ({ movie }) => {
   const title = movie?.name || 'Welcome to Auric'
   const genre = movie?.genre || 'Action | Adventure | Drama'
   const year = movie?.releaseDate ? new Date(movie.releaseDate).getFullYear() : '2025'
-  const duration = movie?.duration ? `${Math.floor(movie.duration / 60)}h ${movie.duration % 60}m` : ''
-  const background = movie?.poster_path || assets.backgroundImage
+  const duration = movie?.duration ? `${Math.floor(movie.duration / 60)}h ${movie.duration % 60}m` : '2h 15m'
+  const background = movie?.posterUrl || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1920&q=80'
 
   return (
     <div

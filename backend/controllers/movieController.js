@@ -1,4 +1,5 @@
 const Movie = require('../models/Movie');
+const mongoose = require('mongoose');
 
 const getAllMovies = async (req, res) => {
   try {
