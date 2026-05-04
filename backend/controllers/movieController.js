@@ -11,6 +11,9 @@ const getAllMovies = async (req, res) => {
 
 const getMovieById = async (req, res) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ error: 'Invalid Movie ID format' });
+    }
     const movie = await Movie.findById(req.params.id);
     if (!movie) return res.status(404).json({ error: 'Movie not found' });
     res.json(movie);

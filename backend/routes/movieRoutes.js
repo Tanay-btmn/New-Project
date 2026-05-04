@@ -13,6 +13,7 @@ const {
 const { verifyToken, isAdmin } = require('../middleware/authMiddleware');
 
 router.get('/getAllMovies', getAllMovies);
+router.get('/get-all-movies', getAllMovies); // Alias for compatibility
 router.get('/getByLanguage', getMoviesByLanguage);
 router.get('/getbyGenre', getMoviesByGenre);
 router.get('/getbyTitle', getMoviesByTitle);
