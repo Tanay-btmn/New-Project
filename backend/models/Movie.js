@@ -13,6 +13,10 @@ const movieSchema = new mongoose.Schema({
   crew: [{ type: String }]
 }, { timestamps: true });
 
+movieSchema.virtual('id').get(function() {
+  return this._id.toHexString();
+});
+
 movieSchema.set('toJSON', {
   virtuals: true,
   versionKey: false,

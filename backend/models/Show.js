@@ -7,6 +7,10 @@ const showSchema = new mongoose.Schema({
   theater: { type: mongoose.Schema.Types.ObjectId, ref: 'Theater', required: true }
 }, { timestamps: true });
 
+showSchema.virtual('id').get(function() {
+  return this._id.toHexString();
+});
+
 showSchema.set('toJSON', {
   virtuals: true,
   versionKey: false,

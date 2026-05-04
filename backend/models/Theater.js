@@ -7,6 +7,10 @@ const theaterSchema = new mongoose.Schema({
   screenType: { type: String }
 }, { timestamps: true });
 
+theaterSchema.virtual('id').get(function() {
+  return this._id.toHexString();
+});
+
 theaterSchema.set('toJSON', {
   virtuals: true,
   versionKey: false,

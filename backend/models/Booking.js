@@ -10,6 +10,10 @@ const bookingSchema = new mongoose.Schema({
   show: { type: mongoose.Schema.Types.ObjectId, ref: 'Show', required: true }
 }, { timestamps: true });
 
+bookingSchema.virtual('id').get(function() {
+  return this._id.toHexString();
+});
+
 bookingSchema.set('toJSON', {
   virtuals: true,
   versionKey: false,
