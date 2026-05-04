@@ -5,7 +5,7 @@
   "main": "backend/index.js",
   "scripts": {
     "install-all": "npm install && cd backend && npm install && cd ../BMS-Frontend && npm install",
-    "build": "cd backend && npm install && cd ../BMS-Frontend && npm install && npm run build",
+    "build": "cd BMS-Frontend && npm install && npm run build && cd ../backend && npm install && rm -rf dist && cp -r ../BMS-Frontend/dist .",
     "start": "cd backend && node index.js",
     "dev": "concurrently \"cd backend && nodemon index.js\" \"cd BMS-Frontend && npm run dev\""
   },

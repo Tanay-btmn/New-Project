@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 8080;
 app.use(cors());
 app.use(express.json());
 
-// 2. API Routes (MUST BE BEFORE STATIC FILES)
+// 2. API Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/movies', require('./routes/movieRoutes'));
 app.use('/api/theaters', require('./routes/theaterRoutes'));
@@ -22,18 +22,9 @@ app.use('/api/admin', require('./routes/adminRoutes'));
 // 3. Static Assets (Posters, etc.)
 app.use('/posters', express.static(path.join(__dirname, 'Posters')));
 
-// 4. Frontend Static Files
-const frontendPath = path.join(__dirname, '../BMS-Frontend/dist');
+// 4. Frontend Static Files (Serving from LOCAL dist folder inside backend)
+const frontendPath = path.join(__dirname, 'dist');
 app.use(express.static(frontendPath));
-
-// Debugging: Verify frontend files exist
-console.log('Checking frontend build at:', frontendPath);
-const fs = require('fs');
-if (fs.existsSync(frontendPath)) {
-  console.log('Frontend build folder found. Contents:', fs.readdirSync(frontendPath));
-} else {
-  console.warn('WARNING: Frontend build folder NOT FOUND at:', frontendPath);
-}
 
 // Database Connection & Auto-Seeding
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/movie_booking';
@@ -43,7 +34,7 @@ mongoose.connect(MONGODB_URI)
   .then(async () => {
     console.log('Connected to MongoDB');
     
-    // Check if we need to seed
+    // Auto-seed if empty
     const movieCount = await Movie.countDocuments();
     if (movieCount === 0) {
       console.log('Database empty, auto-seeding initial data...');
@@ -123,7 +114,7 @@ mongoose.connect(MONGODB_URI)
   })
   .catch(err => console.error('Could not connect to MongoDB', err));
 
-// 5. Frontend Catch-all (MUST BE LAST)
+// 5. Frontend Catch-all
 app.use((req, res) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
