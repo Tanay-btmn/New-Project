@@ -23,7 +23,17 @@ app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/posters', express.static(path.join(__dirname, 'Posters')));
 
 // 4. Frontend Static Files
-app.use(express.static(path.join(__dirname, '../BMS-Frontend/dist')));
+const frontendPath = path.join(__dirname, '../BMS-Frontend/dist');
+app.use(express.static(frontendPath));
+
+// Debugging: Verify frontend files exist
+console.log('Checking frontend build at:', frontendPath);
+const fs = require('fs');
+if (fs.existsSync(frontendPath)) {
+  console.log('Frontend build folder found. Contents:', fs.readdirSync(frontendPath));
+} else {
+  console.warn('WARNING: Frontend build folder NOT FOUND at:', frontendPath);
+}
 
 // Database Connection & Auto-Seeding
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/movie_booking';
@@ -115,7 +125,7 @@ mongoose.connect(MONGODB_URI)
 
 // 5. Frontend Catch-all (MUST BE LAST)
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, '../BMS-Frontend/dist/index.html'));
+  res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
 app.listen(PORT, () => {
