@@ -21,7 +21,7 @@ const MovieDetails = ({ toggleFavorite, favMovies = [] }) => {
         setMovie(response.data)
 
         // Fetch shows for this movie
-        const showsResponse = await API.get(`/api/shows/getshowsbymovie/${id}`)
+        const showsResponse = await API.get(`/api/shows/movie/${id}`)
         setShows(showsResponse.data)
       } catch (err) {
         setError('Movie not found')

@@ -32,6 +32,7 @@ mongoose.connect(MONGODB_URI)
       await Movie.insertMany([
         { 
           name: 'Inception', 
+          description: 'A thief who steals corporate secrets through the use of dream-sharing technology...',
           genre: 'Sci-Fi', 
           duration: 148, 
           posterUrl: '/posters/Inception.jpeg',
@@ -41,6 +42,7 @@ mongoose.connect(MONGODB_URI)
         },
         { 
           name: 'Interstellar', 
+          description: 'A team of explorers travel through a wormhole in space...',
           genre: 'Sci-Fi', 
           duration: 169, 
           posterUrl: '/posters/Interstellar.jpeg',
@@ -50,6 +52,7 @@ mongoose.connect(MONGODB_URI)
         },
         { 
           name: 'The Dark Knight', 
+          description: 'When the menace known as the Joker wreaks havoc...',
           genre: 'Action', 
           duration: 152, 
           posterUrl: '/posters/The Dark Knight.jpeg',
