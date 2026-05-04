@@ -4,6 +4,7 @@ import NavBar from './components/NavBar'
 import Home from './pages/Home'
 import Movies from './pages/Movies'
 import MovieDetails from './pages/MovieDetails'
+import MovieShows from './pages/MovieShows'
 import SeatLayout from './pages/SeatLayout'
 import MyBookings from './pages/MyBookings'
 import Favourite from './pages/Favourite'
@@ -36,6 +37,7 @@ const App = () => {
           <Route path='/' element={<Home toggleFavorite={toggleFavorite} favMovies={favMovies} />} />
           <Route path='/Movies' element={<Movies toggleFavorite={toggleFavorite} favMovies={favMovies} />} />
           <Route path='/Movies/:id' element={<MovieDetails toggleFavorite={toggleFavorite} favMovies={favMovies} />} />
+          <Route path='/Movies/:id/shows' element={<MovieShows />} />
           <Route path='/Movies/:id/:showId' element={<SeatLayout setBookings={setBookings} />} />
           <Route path='/MyBookings' element={<MyBookings bookings={bookings} />} />
           <Route path='/Favourite' element={<Favourite favMovies={favMovies} toggleFavorite={toggleFavorite} />} />

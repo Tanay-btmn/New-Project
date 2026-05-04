@@ -89,6 +89,37 @@ mongoose.connect(MONGODB_URI)
         }
       ]);
       console.log('Auto-seed complete!');
+
+      // Seed Theaters and Shows
+      const Theater = require('./models/Theater');
+      const Show = require('./models/Show');
+      const theaters = await Theater.insertMany([
+        { theaterName: 'PVR Cinemas', location: 'Mall of India, Noida', theaterCapacity: 200, screenType: 'IMAX' },
+        { theaterName: 'INOX', location: 'Cyber City, Gurgaon', theaterCapacity: 150, screenType: '4DX' },
+        { theaterName: 'Cinepolis', location: 'Saket, Delhi', theaterCapacity: 180, screenType: 'Standard' }
+      ]);
+
+      const movies = await Movie.find();
+      const showsData = [];
+      movies.forEach(movie => {
+        theaters.forEach(theater => {
+          // Add 2 shows per movie per theater
+          showsData.push({
+            movie: movie._id,
+            theater: theater._id,
+            showTime: new Date(Date.now() + 86400000), // Tomorrow
+            price: 250 + Math.floor(Math.random() * 200)
+          });
+          showsData.push({
+            movie: movie._id,
+            theater: theater._id,
+            showTime: new Date(Date.now() + 172800000), // Day after
+            price: 250 + Math.floor(Math.random() * 200)
+          });
+        });
+      });
+      await Show.insertMany(showsData);
+      console.log('Theaters and Shows seeded!');
     }
   })
   .catch(err => console.error('Could not connect to MongoDB', err));

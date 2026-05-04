@@ -92,6 +92,13 @@ const MovieDetails = ({ toggleFavorite, favMovies = [] }) => {
               </a>
             )}
 
+            <button 
+              onClick={() => navigate(`/Movies/${id}/shows`)}
+              className="bg-[#F84464] hover:bg-[#ff5272] px-8 py-3 rounded-full font-bold flex items-center gap-2 transition-all shadow-lg"
+            >
+              <Ticket className="w-5 h-5" /> Book Tickets
+            </button>
+
             <button
               onClick={() => toggleFavorite(movie)}
               className={`p-3 rounded-full border transition-all group
@@ -104,10 +111,10 @@ const MovieDetails = ({ toggleFavorite, favMovies = [] }) => {
           </div>
 
           {/* Cast & Crew Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4 mb-20">
             {movie.cast && movie.cast.length > 0 && (
               <div>
-                <h2 className="text-lg font-bold mb-3 text-gray-200">Cast</h2>
+                <h2 className="text-lg font-bold mb-3 text-gray-200 uppercase tracking-widest text-xs">Cast</h2>
                 <div className="flex flex-wrap gap-2">
                   {movie.cast.map((actor, index) => (
                     <span key={index} className="bg-white/5 border border-white/10 px-3 py-1 rounded-lg text-sm text-gray-400">
@@ -119,7 +126,7 @@ const MovieDetails = ({ toggleFavorite, favMovies = [] }) => {
             )}
             {movie.crew && movie.crew.length > 0 && (
               <div>
-                <h2 className="text-lg font-bold mb-3 text-gray-200">Crew</h2>
+                <h2 className="text-lg font-bold mb-3 text-gray-200 uppercase tracking-widest text-xs">Crew</h2>
                 <div className="flex flex-wrap gap-2">
                   {movie.crew.map((member, index) => (
                     <span key={index} className="bg-white/5 border border-white/10 px-3 py-1 rounded-lg text-sm text-gray-400">
@@ -130,45 +137,6 @@ const MovieDetails = ({ toggleFavorite, favMovies = [] }) => {
               </div>
             )}
           </div>
-
-          {/* Shows Section */}
-          <div className="mt-6">
-            <h2 className="text-xl font-bold mb-4 flex items-center gap-3">
-              <span className="w-1.5 h-6 bg-[#F84464] rounded-full"></span>
-              Available Shows
-            </h2>
-            {shows.length > 0 ? (
-              <div className="flex flex-col gap-3">
-                {shows.map((show) => (
-                  <div
-                    key={show.id}
-                    className="flex items-center justify-between bg-white/5 border border-white/10 rounded-xl px-6 py-4"
-                  >
-                    <div className="flex flex-col gap-1">
-                      <span className="text-white font-semibold">
-                        {new Date(show.showTime).toLocaleDateString()}
-                      </span>
-                      <span className="text-gray-400 text-sm">
-                        {new Date(show.showTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </span>
-                      <span className="text-gray-400 text-sm">{show.theater?.theaterName}</span>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <span className="text-[#F84464] font-bold text-lg">₹{show.price}</span>
-                      <button
-                        onClick={() => handleBooking(show.id)}
-                        className="bg-[#F84464] hover:bg-[#ff5272] px-6 py-2 rounded-full font-bold transition-all shadow-lg"
-                      >
-                        Book Tickets
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-gray-400">No shows available for this movie.</p>
-            )}
-          </div>
         </div>
       </div>
     </div>
@@ -176,3 +144,4 @@ const MovieDetails = ({ toggleFavorite, favMovies = [] }) => {
 }
 
 export default MovieDetails
+ls
