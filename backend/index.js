@@ -68,8 +68,13 @@ for (const p of possiblePaths) {
 
 if (finalFrontendPath) {
   app.use(express.static(finalFrontendPath));
-  app.use((req, res, next) => {
-    if (req.path.startsWith('/api') || req.path.startsWith('/posters')) return next();
+  
+  // Catch-all route to serve the frontend for any non-API, non-asset requests
+  app.get('*', (req, res, next) => {
+    // If the request is for an API or asset that wasn't found, let it fall through
+    if (req.path.startsWith('/api') || req.path.startsWith('/posters') || req.path.includes('.')) {
+      return next();
+    }
     res.sendFile(path.join(finalFrontendPath, 'index.html'));
   });
 } else {
